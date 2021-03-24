@@ -15,8 +15,6 @@ import org.springframework.hateoas.MediaTypes
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
-import org.springframework.http.converter.HttpMessageConverter
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
@@ -32,16 +30,6 @@ class ProductControllerTest {
 
     @Autowired
     private lateinit var mockMvc: MockMvc
-
-    @Autowired
-    fun setConverters(converters: Array<HttpMessageConverter<Any>>) {
-        this.mappingJackson2HttpMessageConverter = listOf(*converters).stream()
-            .filter { hmc: HttpMessageConverter<*>? -> hmc is MappingJackson2HttpMessageConverter }
-            .findAny()
-            .orElse(null)
-    }
-
-    private lateinit var mappingJackson2HttpMessageConverter: HttpMessageConverter<Any>
 
     @Nested
     inner class GetAllProducts {
@@ -87,14 +75,14 @@ class ProductControllerTest {
             val idToBeTested = 1
             mockMvc.perform(
                 MockMvcRequestBuilders.get("/products/$idToBeTested")
-                    .accept(MediaType.APPLICATION_JSON_VALUE)
-                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .accept(MediaTypes.HAL_JSON_VALUE)
+                    .contentType(MediaTypes.HAL_JSON_VALUE)
             )
                 .andExpect(status().isOk)
                 .andExpect(
-                    header().string(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                    header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE)
                 )
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(content().contentType(MediaTypes.HAL_JSON_VALUE))
                 .andExpect(jsonPath("$.product.id", Matchers.`is`(idToBeTested)))
         }
 
@@ -104,15 +92,15 @@ class ProductControllerTest {
             val idToBeTested = 999
             mockMvc.perform(
                 MockMvcRequestBuilders.get("/products/$idToBeTested")
-                    .accept(MediaType.APPLICATION_JSON_VALUE)
-                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .accept(MediaTypes.HAL_JSON_VALUE)
+                    .contentType(MediaTypes.HAL_JSON_VALUE)
             )
                 .andExpect(status().is4xxClientError)
                 .andExpect(status().`is`(HttpStatus.NOT_FOUND.value()))
                 .andExpect(
-                    header().string(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                    header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE)
                 )
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(content().contentType(MediaTypes.HAL_JSON_VALUE))
                 .andExpect(
                     content().string(Matchers.containsString("could not find product with id : $idToBeTested"))
                 )
