@@ -3,20 +3,9 @@ package com.octo.woapi.katapispringbootkotlin.infrastructure.controller
 import com.octo.woapi.katapispringbootkotlin.domain.product.Product
 import com.octo.woapi.katapispringbootkotlin.domain.product.ProductSortAttributes
 import com.octo.woapi.katapispringbootkotlin.infrastructure.persistence.ProductService
-import com.octo.woapi.katapispringbootkotlin.infrastructure.rest.ProductResource
-import org.springframework.hateoas.CollectionModel
-import org.springframework.hateoas.EntityModel
-import org.springframework.hateoas.Link
-import org.springframework.hateoas.MediaTypes
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
-import org.springframework.http.ResponseEntity
-import org.springframework.http.ResponseEntity.created
-import org.springframework.http.ResponseEntity.status
 import org.springframework.web.bind.annotation.*
-import java.net.URI
-import java.util.*
-import java.util.stream.Collectors
 import javax.servlet.http.HttpServletResponse
 
 @RestController
@@ -33,27 +22,16 @@ class ProductController(val productService: ProductService) {
      * GET methods
      *************************************************************************/
 
-    @GetMapping(value = [""], produces = [MediaTypes.HAL_JSON_VALUE])
-    @ResponseStatus(HttpStatus.OK)
-    fun listAllProductsHypermedia(): CollectionModel<ProductResource> {
-        val productResources: List<ProductResource> = productService.getAllProducts()
-            .stream()
-            .map { ProductResource(it) }
-            .collect(Collectors.toList())
-        return CollectionModel.of(productResources)
-    }
-
     @GetMapping(value = [""], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
     fun listAllProducts(): List<Product> {
         return productService.getAllProducts()
     }
 
-    @GetMapping(value = ["/{productId}"], produces = [MediaTypes.HAL_JSON_VALUE])
+    @GetMapping(value = ["/{productId}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
-    fun getProductById(@PathVariable productId: Long): EntityModel<ProductResource> {
-        val product = productService.getProductById(productId)
-        return EntityModel.of(ProductResource(product))
+    fun getProductById(@PathVariable productId: Long): Product {
+        return productService.getProductById(productId)
     }
 
     /*************************************************************************
@@ -102,15 +80,10 @@ class ProductController(val productService: ProductService) {
      * POST methods
      *************************************************************************/
 
-    @PostMapping(value = [""], produces = [MediaType.APPLICATION_JSON_VALUE, MediaTypes.HAL_JSON_VALUE])
-    fun createProduct(@RequestBody product: Product): ResponseEntity<Product> {
-        val createdProduct = productService.createProduct(product.name, product.price, product.weight)
-        val linkToThisProduct: Optional<Link> = ProductResource(createdProduct).getLink("self")
-
-        if (linkToThisProduct.isPresent) {
-            return created(URI.create(linkToThisProduct.get().href)).body(createdProduct)
-        }
-        return status(HttpStatus.INTERNAL_SERVER_ERROR).build()
+    @PostMapping(value = [""], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @ResponseStatus(HttpStatus.CREATED)
+    fun createProduct(@RequestBody product: Product): Product {
+        return productService.createProduct(product.name, product.price, product.weight)
     }
 
     /*************************************************************************

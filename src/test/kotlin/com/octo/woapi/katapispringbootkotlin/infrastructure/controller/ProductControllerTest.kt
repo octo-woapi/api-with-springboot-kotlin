@@ -1,7 +1,6 @@
 package com.octo.woapi.katapispringbootkotlin.infrastructure.controller
 
 import com.octo.woapi.katapispringbootkotlin.infrastructure.exception.ProductNotFoundException
-import com.octo.woapi.katapispringbootkotlin.infrastructure.rest.ProductResource
 import org.hamcrest.Matchers
 import org.hamcrest.Matchers.hasSize
 import org.intellij.lang.annotations.Language
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.hateoas.MediaTypes
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -49,23 +47,6 @@ class ProductControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize<Any>(12)))
         }
-
-        @Test
-        fun getAllProductsHypermedia_shouldReturnAllProductsInDBInHypermedia() {
-            mockMvc.perform(
-                MockMvcRequestBuilders.get("/products")
-                    .accept(MediaTypes.HAL_JSON)
-                    .contentType(MediaTypes.HAL_JSON)
-            )
-                .andExpect(status().isOk)
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(
-                    header()
-                        .string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE)
-                )
-                .andExpect(content().contentType(MediaTypes.HAL_JSON))
-                .andExpect(jsonPath("$._embedded.productResources", hasSize<ProductResource>(12)))
-        }
     }
 
     @Nested
@@ -75,15 +56,14 @@ class ProductControllerTest {
             val idToBeTested = 1
             mockMvc.perform(
                 MockMvcRequestBuilders.get("/products/$idToBeTested")
-                    .accept(MediaTypes.HAL_JSON_VALUE)
-                    .contentType(MediaTypes.HAL_JSON_VALUE)
+                    .accept(MediaType.APPLICATION_JSON_VALUE)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
             )
                 .andExpect(status().isOk)
                 .andExpect(
-                    header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE)
+                    header().string(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 )
-                .andExpect(content().contentType(MediaTypes.HAL_JSON_VALUE))
-                .andExpect(jsonPath("$.product.id", Matchers.`is`(idToBeTested)))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
         }
 
         @Test
@@ -92,15 +72,15 @@ class ProductControllerTest {
             val idToBeTested = 999
             mockMvc.perform(
                 MockMvcRequestBuilders.get("/products/$idToBeTested")
-                    .accept(MediaTypes.HAL_JSON_VALUE)
-                    .contentType(MediaTypes.HAL_JSON_VALUE)
+                    .accept(MediaType.APPLICATION_JSON_VALUE)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
             )
                 .andExpect(status().is4xxClientError)
                 .andExpect(status().`is`(HttpStatus.NOT_FOUND.value()))
                 .andExpect(
-                    header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE)
+                    header().string(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 )
-                .andExpect(content().contentType(MediaTypes.HAL_JSON_VALUE))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(
                     content().string(Matchers.containsString("could not find product with id : $idToBeTested"))
                 )
