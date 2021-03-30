@@ -32,7 +32,7 @@ class ProductControllerTest {
     @Nested
     inner class GetAllProducts {
         @Test
-        fun getAllProducts_shouldReturnAllProductsInDB() {
+        fun `should return all the products from the db`() {
             mockMvc.perform(
                 MockMvcRequestBuilders.get("/products")
                     .accept(MediaType.APPLICATION_JSON)
@@ -52,7 +52,7 @@ class ProductControllerTest {
     @Nested
     inner class GetProductById {
         @Test
-        fun getProductById_shouldReturnTheCorrectProduct() {
+        fun `should return a product from the db with a correct id`() {
             val idToBeTested = 1
             mockMvc.perform(
                 MockMvcRequestBuilders.get("/products/$idToBeTested")
@@ -68,7 +68,7 @@ class ProductControllerTest {
 
         @Test
         @Throws(ProductNotFoundException::class)
-        fun getProductById_shouldReturn404ifNotFound() {
+        fun `should return a http code 404 if product not found`() {
             val idToBeTested = 999
             mockMvc.perform(
                 MockMvcRequestBuilders.get("/products/$idToBeTested")
@@ -90,7 +90,7 @@ class ProductControllerTest {
     @Nested
     inner class CreateProduct {
         @Test
-        fun createProduct_shouldReturnAProductWithID() {
+        fun `should return the new product with a new id`() {
             //given
             @Language(value = "json")
             val productJson = """
@@ -116,7 +116,7 @@ class ProductControllerTest {
         }
 
         @Test
-        fun createProduct_shouldReturn400IfNameIsMissing() {
+        fun `should return http code 400 if name is missing`() {
             //given
             @Language(value = "json")
             val productJson = """
@@ -136,7 +136,7 @@ class ProductControllerTest {
         }
 
         @Test
-        fun createProduct_shouldReturn400IfPriceIsMissing() {
+        fun `should return http code 400 if price is missing`() {
             //given
             @Language(value = "json")
             val productJson = """
@@ -156,7 +156,7 @@ class ProductControllerTest {
         }
 
         @Test
-        fun createProduct_shouldReturn400IfWeightIsMissing() {
+        fun `should return http code 400 if weight is missing`() {
             //given
             @Language(value = "json")
             val productJson = """
@@ -179,14 +179,14 @@ class ProductControllerTest {
     @Nested
     inner class DeleteProduct {
         @Test
-        fun deleteProduct_shouldReturn204() {
+        fun `should delete a product and return http code 204`() {
             val idToBeTested = 2
             mockMvc.perform(MockMvcRequestBuilders.delete("/products/$idToBeTested"))
                 .andExpect(status().isNoContent)
         }
 
         @Test
-        fun deleteProduct_shouldReturn404IfProductNotFound() {
+        fun `should return http code 404 if product not found`() {
             val idToBeTested = 5555
             mockMvc.perform(MockMvcRequestBuilders.delete("/products/$idToBeTested"))
                 .andExpect(status().isNotFound)
@@ -197,7 +197,7 @@ class ProductControllerTest {
     @Nested
     inner class GetAllProductsWithSort {
         @Test
-        fun getAllProducts_shouldSortByNameIfParamSortName() {
+        fun `should sort all the products by name if sort=name`() {
             mockMvc.perform(
                 MockMvcRequestBuilders.get("/products/?sort=name")
                     .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -211,7 +211,7 @@ class ProductControllerTest {
         }
 
         @Test
-        fun getAllProducts_shouldSortByWeightIfParamSortWeight() {
+        fun `should sort all the products by weight if sort=weight`() {
             mockMvc.perform(
                 MockMvcRequestBuilders.get("/products/?sort=weight")
                     .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -224,7 +224,7 @@ class ProductControllerTest {
         }
 
         @Test
-        fun getAllProducts_shouldSortByPriceIfParamSortPrice() {
+        fun `should sort all the products by price if sort=price`() {
             mockMvc.perform(
                 MockMvcRequestBuilders.get("/products/?sort=price")
                     .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -237,7 +237,7 @@ class ProductControllerTest {
         }
 
         @Test
-        fun getAllProducts_shouldIgnoreWrongSortParam() {
+        fun `should ignore sorting if sort parameter is unknown`() {
             mockMvc.perform(
                 MockMvcRequestBuilders.get("/products/?sort=zezefzefzefzf")
                     .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -251,7 +251,7 @@ class ProductControllerTest {
         }
 
         @Test
-        fun getAllProducts_shouldIgnoreEmptySortParam() {
+        fun `should ignore sorting if sort parameter is empty`() {
             mockMvc.perform(
                 MockMvcRequestBuilders.get("/products/?sort=")
                     .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -267,7 +267,7 @@ class ProductControllerTest {
     @Nested
     inner class GetAllProductsPaginated {
         @Test
-        fun getAllProductsSorted_shouldReturnProductsFromPage1With3ElementsPerPage() {
+        fun `should return product from page 1 with 3 products per page`() {
             mockMvc.perform(
                 MockMvcRequestBuilders.get("/products?page=1&per-page=3")
                     .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -281,7 +281,7 @@ class ProductControllerTest {
         }
 
         @Test
-        fun getAllProductsSorted_shouldReturnProductsFromPage0With2ElementsPerPage() {
+        fun `should return products from page 0 with 2 products per page`() {
             mockMvc.perform(
                 MockMvcRequestBuilders.get("/products/?page=0&per-page=2")
                     .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -294,7 +294,7 @@ class ProductControllerTest {
         }
 
         @Test
-        fun getAllProducts_shouldReturnProductsFromPage1With5ElementsPerPage() {
+        fun `should return product from page 1 with 5 elements per page`() {
             mockMvc.perform(
                 MockMvcRequestBuilders.get("/products/?page=1&per-page=5")
                     .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -308,7 +308,7 @@ class ProductControllerTest {
         }
 
         @Test
-        fun getAllProductsSorted_shouldlimitPaginationTo10ElementsPerPage() {
+        fun `should limit pagination to maximum 10 if per-page parameter is too big`() {
             mockMvc.perform(MockMvcRequestBuilders.get("/products/?page=0&per-page=100"))
                 .andExpect(jsonPath("$", hasSize<Any>(10)))
         }
