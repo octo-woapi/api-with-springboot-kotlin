@@ -8,21 +8,21 @@ internal class ProductSortAttributesTest {
 
     @ParameterizedTest
     @ValueSource(strings = ["name", "NAME"])
-    fun contains_shouldReturnTrueIfEnumDoesExists(value: String) {
+    fun `contains should return true if enum exists`(value: String) {
         val contains = ProductSortAttributes.contains(value)
         assertThat(contains).isTrue
     }
 
     @ParameterizedTest
     @ValueSource(strings = ["wrong", "WRONG"])
-    fun contains_shouldReturnFalseIfEnumDoesNotExists(value: String) {
+    fun `contains should return false if enum doesn't exists`(value: String) {
         val contains = ProductSortAttributes.contains(value)
         assertThat(contains).isFalse
     }
 
     @ParameterizedTest
     @ValueSource(strings = ["name", "NAME"])
-    fun get_shouldReturnEnumValueIfValueExists(value: String) {
+    fun `get should return the enum value if enum exists`(value: String) {
         val productSortName = ProductSortAttributes.get(value)
         assertThat(productSortName).isNotNull
         assertThat(productSortName.attributeLowerCase).isEqualTo("name")
@@ -30,7 +30,7 @@ internal class ProductSortAttributesTest {
 
     @ParameterizedTest
     @ValueSource(strings = ["wrong", "WRONG"])
-    fun get_shouldReturnDefaultEnumValueIDIfValueDoesNotExists(value: String) {
+    fun `get should return the ID enum value if enum doesn't exists`(value: String) {
         val productSortName = ProductSortAttributes.get(value)
         assertThat(productSortName).isNotNull
         assertThat(productSortName.attributeLowerCase).isEqualTo("id")

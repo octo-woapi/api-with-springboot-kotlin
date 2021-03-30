@@ -2,7 +2,7 @@ package com.octo.woapi.katapispringbootkotlin.infrastructure.controller
 
 import com.octo.woapi.katapispringbootkotlin.domain.product.Product
 import com.octo.woapi.katapispringbootkotlin.domain.product.ProductSortAttributes
-import com.octo.woapi.katapispringbootkotlin.infrastructure.persistence.ProductService
+import com.octo.woapi.katapispringbootkotlin.domain.product.ProductService
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
@@ -83,7 +83,7 @@ class ProductController(val productService: ProductService) {
     @PostMapping(value = [""], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.CREATED)
     fun createProduct(@RequestBody product: Product): Product {
-        return productService.createProduct(product.name, product.price, product.weight)
+        return productService.createProduct(product)
     }
 
     /*************************************************************************

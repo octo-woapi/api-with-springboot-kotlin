@@ -1,13 +1,11 @@
-package com.octo.woapi.katapispringbootkotlin.domain.product;
+package com.octo.woapi.katapispringbootkotlin.domain.product
 
-import java.util.*
+enum class ProductSortAttributes(val attributeLowerCase: String) {
 
-enum class ProductSortAttributes(val attributeLowerCase: String, val comparator: Comparator<Product>) {
-
-    ID("id", Comparator.comparing(Product::id)),
-    NAME("name", Comparator.comparing(Product::name)),
-    PRICE("price", Comparator.comparing(Product::price)),
-    WEIGHT("weight", Comparator.comparing(Product::weight));
+    ID("id"),
+    NAME("name"),
+    PRICE("price"),
+    WEIGHT("weight");
 
     companion object {
         fun contains(value: String?): Boolean {
@@ -19,7 +17,7 @@ enum class ProductSortAttributes(val attributeLowerCase: String, val comparator:
             return false
         }
 
-        fun get(value: String ?): ProductSortAttributes {
+        fun get(value: String?): ProductSortAttributes {
             val sortExist = contains(value)
             return if (sortExist && value != null) valueOf(value.toUpperCase()) else ID
         }
