@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class KatapiSpringbootKotlinApplication
 
 fun main(args: Array<String>) {
-	runApplication<KatapiSpringbootKotlinApplication>(*args)
+    runApplication<KatapiSpringbootKotlinApplication>(*args)
 }
