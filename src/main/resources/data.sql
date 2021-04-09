@@ -11,3 +11,11 @@ INSERT INTO products (id, name, price, weight) values (9, 'Screw box 25mm 200 un
 INSERT INTO products (id, name, price, weight) values (10, 'Screw box 75mm 50 units', 15.0, 2.5);
 INSERT INTO products (id, name, price, weight) values (11, 'Screw box 75mm 100 units', 30.0, 5.0);
 INSERT INTO products (id, name, price, weight) values (12, 'Screw box 100mm 50 units', 25.0, 3.0);
+
+-- Creation des données "orders"
+INSERT INTO orders (id, status) values (1, 'PENDING');
+INSERT INTO orders (id, status) values (2, 'PAID');
+
+-- Creation des données "order_content"
+INSERT INTO orders_content (order_id, product_id) values (1, 1);
+INSERT INTO orders_content (order_id, product_id) values (2, 2);

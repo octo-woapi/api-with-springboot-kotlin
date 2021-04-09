@@ -1,3 +1,7 @@
 -- Creation du schema du projet
 DROP TABLE IF EXISTS products;
 CREATE TABLE products(id INTEGER PRIMARY KEY AUTO_INCREMENT, name VARCHAR, price NUMERIC, weight NUMERIC);
+DROP TABLE IF EXISTS orders;
+CREATE TABLE orders(id INTEGER PRIMARY KEY AUTO_INCREMENT, status VARCHAR);
+DROP TABLE IF EXISTS orders_content;
+CREATE TABLE orders_content(order_id INTEGER AUTO_INCREMENT, product_id INTEGER);
