@@ -1,6 +1,6 @@
-package com.octo.woapi.katapispringbootkotlin.infrastructure.controller
+package com.octo.woapi.katapispringbootkotlin.infrastructure.product.controller
 
-import com.octo.woapi.katapispringbootkotlin.infrastructure.exception.ProductNotFoundException
+import com.octo.woapi.katapispringbootkotlin.infrastructure.product.exception.ProductNotFoundException
 import org.hamcrest.Matchers
 import org.hamcrest.Matchers.hasSize
 import org.intellij.lang.annotations.Language

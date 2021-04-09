@@ -1,9 +1,9 @@
-package com.octo.woapi.katapispringbootkotlin.infrastructure.persistence
+package com.octo.woapi.katapispringbootkotlin.infrastructure.product.persistence
 
 import com.octo.woapi.katapispringbootkotlin.domain.product.Product
 import com.octo.woapi.katapispringbootkotlin.domain.product.ProductService
 import com.octo.woapi.katapispringbootkotlin.domain.product.ProductSortAttributes
-import com.octo.woapi.katapispringbootkotlin.infrastructure.exception.ProductNotFoundException
+import com.octo.woapi.katapispringbootkotlin.infrastructure.product.exception.ProductNotFoundException
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort

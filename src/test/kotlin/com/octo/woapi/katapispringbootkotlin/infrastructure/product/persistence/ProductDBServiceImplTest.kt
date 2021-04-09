@@ -1,7 +1,7 @@
-package com.octo.woapi.katapispringbootkotlin.infrastructure.persistence
+package com.octo.woapi.katapispringbootkotlin.infrastructure.product.persistence
 
 import com.octo.woapi.katapispringbootkotlin.domain.product.Product
-import com.octo.woapi.katapispringbootkotlin.infrastructure.exception.ProductNotFoundException
+import com.octo.woapi.katapispringbootkotlin.infrastructure.product.exception.ProductNotFoundException
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

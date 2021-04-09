@@ -1,7 +1,7 @@
-package com.octo.woapi.katapispringbootkotlin.infrastructure.controller
+package com.octo.woapi.katapispringbootkotlin.infrastructure.product.controller
 
 import com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException
-import com.octo.woapi.katapispringbootkotlin.infrastructure.exception.ProductNotFoundException
+import com.octo.woapi.katapispringbootkotlin.infrastructure.product.exception.ProductNotFoundException
 import org.springframework.hateoas.mediatype.problem.Problem
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ControllerAdvice
@@ -28,6 +28,6 @@ class ProductControllerAdvice {
     fun handleMissingKotlinParameter(e: MissingKotlinParameterException): Problem {
        return Problem.create()
            .withDetail("param '${e.parameter.name}' is required")
-           .withStatus(HttpStatus.BAD_REQUEST);
+           .withStatus(HttpStatus.BAD_REQUEST)
     }
 }
