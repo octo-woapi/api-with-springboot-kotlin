@@ -56,15 +56,20 @@ class ProductDBServiceImplTest(@Autowired val productDBServiceImpl: ProductDBSer
     }
 
     @Test
-    fun `insertProduct should add a product with id 13`() {
+    fun `insertProduct should add a new product`() {
         //when
         val newProduct =
-            Product(id = null, name = "Screw box 100mm 50 units", price = 50.0.toBigDecimal(), weight = 25.0.toBigDecimal())
+            Product(
+                id = null,
+                name = "Screw box 100mm 50 units",
+                price = 50.0.toBigDecimal(),
+                weight = 25.0.toBigDecimal()
+            )
         val insertedProduct = productDBServiceImpl.createProduct(newProduct)
         val products = productDBServiceImpl.getAllProducts()
         //then
         Assertions.assertThat(products).hasSize(13)
-        Assertions.assertThat(insertedProduct.id).isEqualTo(13)
+        Assertions.assertThat(insertedProduct.id).isNotNull;
         Assertions.assertThat(products[12].weight).isEqualTo(25.0.toBigDecimal())
         Assertions.assertThat(products[12].price).isEqualTo(50.0.toBigDecimal())
         Assertions.assertThat(products[12].name).isEqualTo("Screw box 100mm 50 units")
